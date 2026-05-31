@@ -6,12 +6,13 @@ Welcome to the **Smart Business Management System** (SBMS), a state-of-the-art, 
 
 ## 🏗️ Project Architecture
 
-The system is structured as a decoupled monorepo:
+The system is structured as a Microservices-ready decoupled monorepo:
 
 ```
 smart-business-management-system/
-├── client/          # Frontend client application (React / Vite / TailwindCSS / Modern UI)
-├── server/          # Backend server application (Node.js / Express / REST or GraphQL API)
+├── client/          # Frontend client application (Angular 17 / TypeScript)
+├── server/          # Main Backend server application (FastAPI / Python)
+├── auth-service/    # Upcoming Centralized Auth Microservice (JWT / IAM)
 ├── docs/            # Project documentation and architectural specs
 ├── README.md        # Main entrypoint documentation
 └── .gitignore       # Git exclusion specifications
@@ -21,35 +22,36 @@ smart-business-management-system/
 
 ## 🌟 Key Features
 
+- **🔒 Role-Based Access Control (RBAC):** Secure JWT authentication, route guards, and granular permissions for staff, managers, and administrators via a Centralized Auth Service.
 - **📊 Dynamic Dashboard:** High-level metrics, revenue tracking, and business health monitoring with rich interactive charts.
 - **👥 Customer Relationship Management (CRM):** Track client interactions, pipeline stages, and contact info.
 - **📦 Inventory & Product Control:** Real-time stock alerts, inventory turnover, and product catalogs.
 - **📄 Invoicing & Finance:** Seamless invoice generation, automated payment reminders, and expense reporting.
 - **📈 Analytics & Reporting:** Advanced business intelligence, forecasting, and downloadable reports.
-- **🔒 Role-Based Access Control (RBAC):** Secure authentication and granular permissions for staff, managers, and administrators.
 
 ---
 
-## 🛠️ Technology Stack (Planned)
+## 🛠️ Technology Stack
 
 ### **Frontend (client)**
-- **Framework:** React with TypeScript / Vite
-- **Styling:** TailwindCSS & modern glassmorphic components
-- **State Management:** Redux Toolkit or Zustand
-- **Charts:** Recharts / Chart.js
+- **Framework:** Angular 17+ (Standalone / NgModule Architecture)
+- **Styling:** Vanilla SCSS & modern glassmorphic components
+- **Routing:** Lazy-Loaded Feature Modules
+- **State/API:** RxJS, Angular HttpClient Interceptors
 
-### **Backend (server)**
-- **Runtime:** Node.js
-- **Framework:** Express / TypeScript
-- **Database:** PostgreSQL or MongoDB (with Prisma ORM)
-- **Auth:** JSON Web Tokens (JWT) & bcrypt
+### **Backend (server / auth-service)**
+- **Runtime:** Python 3.10+
+- **Framework:** FastAPI
+- **Database:** MySQL / SQLite
+- **ORM:** SQLAlchemy
+- **Auth:** JSON Web Tokens (PyJWT) & bcrypt
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) (v18+) and [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) installed.
+Make sure you have [Node.js](https://nodejs.org/) (for Angular CLI) and [Python](https://www.python.org/) installed.
 
 ### Setup Instructions
 
@@ -59,26 +61,26 @@ Make sure you have [Node.js](https://nodejs.org/) (v18+) and [npm](https://www.n
    cd smart-business-management-system
    ```
 
-2. **Install Client Dependencies:**
+2. **Run Frontend (Client):**
    ```bash
    cd client
    npm install
+   ng serve -o
    ```
 
-3. **Install Server Dependencies:**
+3. **Run Backend (Server):**
    ```bash
    cd ../server
-   npm install
+   python -m venv venv
+   .\venv\Scripts\activate
+   pip install -r requirements.txt
+   uvicorn main:app --reload
    ```
-
-4. **Run Development Servers:**
-   - For client: `npm run dev` inside `/client`
-   - For server: `npm run dev` inside `/server`
 
 ---
 
 ## 📖 Documentation
-Detailed specifications, API reference manuals, database schema diagrams, and wireframes are stored inside the [/docs](file:///d:/PROJECT/smart-business-management-system/docs) directory.
+Detailed specifications, API reference manuals, database schema diagrams, and wireframes are stored inside the `docs/` directory.
 
 ---
 
