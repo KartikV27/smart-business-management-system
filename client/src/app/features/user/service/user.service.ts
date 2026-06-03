@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8000';
+  private apiUrl = 'http://localhost:8001/api';
   private tokenKey = 'auth_token';
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -21,6 +21,10 @@ export class UserService {
         }
       })
     );
+  }
+
+  register(user: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users`, user);
   }
 
   setupAdmin(): Observable<any> {

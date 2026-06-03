@@ -4,7 +4,6 @@ from app.routers.product_router import router as product_router
 from app.routers.customer_router import router as customer_router
 from app.routers.sale_router import router as sale_router
 from app.routers.dashboard_router import router as dashboard_router
-from app.routers.user_router import router as user_router
 from app.routers.purchase_router import router as purchase_router
 from app.database.connection import engine, Base
 
@@ -12,7 +11,6 @@ from app.database.connection import engine, Base
 import app.models.product_model
 import app.models.customer_model
 import app.models.sale_model
-import app.models.user_model
 import app.models.purchase_model
 
 app = FastAPI()
@@ -33,10 +31,12 @@ Base.metadata.create_all(bind=engine)
 def home():
     return {"message": "Smart Business Management Backend Running"}
 
-# Include Routers
-app.include_router(user_router, tags=["Users"])
-app.include_router(dashboard_router, tags=["Dashboard"])
-app.include_router(product_router, tags=["Products"])
-app.include_router(purchase_router, tags=["Purchases"])
-app.include_router(sale_router, tags=["Sales/Billing"])
-app.include_router(customer_router, tags=["Customers"])
+from fastapi import Depends
+from app.core.security import get_current_user_payload
+
+# Include Routers with JWT Security Dependency
+app.include_router(dashboard_router, tags=["Dashboard"], dependencies=[Depends(get_current_user_payload)])
+app.include_router(product_router, tags=["Products"], dependencies=[Depends(get_current_user_payload)])
+app.include_router(purchase_router, tags=["Purchases"], dependencies=[Depends(get_current_user_payload)])
+app.include_router(sale_router, tags=["Sales/Billing"], dependencies=[Depends(get_current_user_payload)])
+app.include_router(customer_router, tags=["Customers"], dependencies=[Depends(get_current_user_payload)])
