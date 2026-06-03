@@ -10,7 +10,10 @@ import { UserService } from '../../service/user.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  registerForm: FormGroup;
   errorMessage: string = '';
+  isRegisterMode: boolean = false;
+  successMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -21,19 +24,46 @@ export class LoginComponent {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+
+    this.registerForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      role: ['USER']
+    });
+  }
+
+  toggleMode() {
+    this.isRegisterMode = !this.isRegisterMode;
+    this.errorMessage = '';
+    this.successMessage = '';
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      this.userService.login(this.loginForm.value).subscribe({
-        next: (res) => {
-          // Typically we would save the token to localStorage here
-          this.router.navigate(['/dashboard']);
-        },
-        error: (err) => {
-          this.errorMessage = err.error?.detail || 'Invalid credentials';
-        }
-      });
+    if (this.isRegisterMode) {
+      if (this.registerForm.valid) {
+        this.userService.register(this.registerForm.value).subscribe({
+          next: (res) => {
+            this.successMessage = 'Registration successful! You can now log in.';
+            this.isRegisterMode = false; // switch back to login
+            this.registerForm.reset({role: 'USER'});
+          },
+          error: (err) => {
+            this.errorMessage = err.error?.detail || 'Registration failed';
+          }
+        });
+      }
+    } else {
+      if (this.loginForm.valid) {
+        this.userService.login(this.loginForm.value).subscribe({
+          next: (res) => {
+            this.router.navigate(['/dashboard']);
+          },
+          error: (err) => {
+            this.errorMessage = err.error?.detail || 'Invalid credentials';
+          }
+        });
+      }
     }
   }
 
